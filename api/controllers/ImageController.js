@@ -8,7 +8,7 @@ var resemble = require('node-resemble');
 module.exports = {
     upload: function (req, res) {
         var path = req.param('path');
-        if (path && path!"") {
+        if (path && path != "") {
             req.file("file").upload(function (err, uploadedFiles) {
                 if (err) return res.send(500, err);
                 _.each(uploadedFiles, function (n) {
