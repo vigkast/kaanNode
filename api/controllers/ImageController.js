@@ -125,7 +125,7 @@ module.exports = {
         }
     },
     compare: function (req, res) {
-        resemble('./1.jpg').compareTo('./6.jpg').ignoreAntialiasing().onComplete(function (data) {
+        resemble('./img/1.jpg').compareTo('./img/6.jpg').ignoreAntialiasing().onComplete(function (data) {
             res.json(data);
         });
     },
