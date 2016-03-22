@@ -106,8 +106,7 @@ module.exports = {
                             db.close();
                         }
                     });
-                }
-                if (err) {
+                } else {
                     console.log(err);
                     callback({
                         value: false
