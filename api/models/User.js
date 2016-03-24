@@ -15,27 +15,44 @@ module.exports = {
                 });
             } else {
                 if (!data._id) {
-                    data._id = sails.ObjectID();
-                    db.collection('user').insert(data, function(err, created) {
+                    db.collection("user").find({
+                        email: data.email
+                    }).toArray(function(err, data2) {
                         if (err) {
                             console.log(err);
                             callback({
-                                value: false,
                                 comment: "Error"
                             });
                             db.close();
-                        } else if (created) {
-                            callback({
-                                value: true,
-                                id: data._id
-                            });
-                            db.close();
-                        } else {
+                        } else if (data2 && data2[0]) {
                             callback({
                                 value: false,
-                                comment: "Not created"
+                                comment: "User already exists"
                             });
-                            db.close();
+                        } else {
+                            data._id = sails.ObjectID();
+                            db.collection('user').insert(data, function(err, created) {
+                                if (err) {
+                                    console.log(err);
+                                    callback({
+                                        value: false,
+                                        comment: "Error"
+                                    });
+                                    db.close();
+                                } else if (created) {
+                                    callback({
+                                        value: true,
+                                        comment: data
+                                    });
+                                    db.close();
+                                } else {
+                                    callback({
+                                        value: false,
+                                        comment: "Not created"
+                                    });
+                                    db.close();
+                                }
+                            });
                         }
                     });
                 } else {
@@ -83,8 +100,7 @@ module.exports = {
                 if (db) {
                     db.collection('user').find({
                         email: data.email,
-                        password: data.password,
-                        accesslevel: data.accesslevel
+                        password: data.password
                     }, {
                         password: 0
                     }).toArray(function(err, found) {
@@ -148,4 +164,35 @@ module.exports = {
             }
         });
     },
+    delete: function(data, callback) {
+        sails.query(function(err, db) {
+            if (err) {
+                console.log(err);
+                callback({
+                    value: false
+                });
+            } else {
+                db.collection("user").remove(function(err, found) {
+                    if (err) {
+                        callback({
+                            value: false
+                        });
+                        db.close();
+                    } else if (found) {
+                        callback({
+                            value: true,
+                            comment: "Deleted"
+                        });
+                        db.close();
+                    } else {
+                        callback({
+                            value: false,
+                            comment: "No data found"
+                        });
+                        db.close();
+                    }
+                });
+            }
+        });
+    }
 };
