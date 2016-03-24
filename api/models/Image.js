@@ -28,7 +28,7 @@ module.exports = {
                         } else if (created) {
                             callback({
                                 value: true,
-                                comment: data
+                                id: data._id
                             });
                             db.close();
                         } else {
