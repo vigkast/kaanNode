@@ -15,9 +15,8 @@ module.exports = {
                 });
             } else {
                 if (!data._id) {
-                    db.collection("user").find({
-                        email: data.email
-                    }).toArray(function(err, data2) {
+                    data._id = sails.ObjectID();
+                    db.collection('user').insert(data, function(err, created) {
                         if (err) {
                             console.log(err);
                             callback({
@@ -25,36 +24,18 @@ module.exports = {
                                 comment: "Error"
                             });
                             db.close();
-                        } else if (data2 && data2[0]) {
+                        } else if (created) {
                             callback({
-                                value: false,
-                                comment: "User already exists"
+                                value: true
+                                comment: data
                             });
                             db.close();
                         } else {
-                            data._id = sails.ObjectID();
-                            db.collection('user').insert(data, function(err, created) {
-                                if (err) {
-                                    console.log(err);
-                                    callback({
-                                        value: false,
-                                        comment: "Error"
-                                    });
-                                    db.close();
-                                } else if (created) {
-                                    callback({
-                                        value: true
-                                        comment: data
-                                    });
-                                    db.close();
-                                } else {
-                                    callback({
-                                        value: false,
-                                        comment: "Not created"
-                                    });
-                                    db.close();
-                                }
+                            callback({
+                                value: false,
+                                comment: "Not created"
                             });
+                            db.close();
                         }
                     });
                 } else {
