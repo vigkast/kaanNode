@@ -26,8 +26,8 @@ module.exports = {
                             db.close();
                         } else if (created) {
                             callback({
-                                value: true,
-                                id: data._id
+                                value: true
+                                comment: data
                             });
                             db.close();
                         } else {
@@ -83,8 +83,7 @@ module.exports = {
                 if (db) {
                     db.collection('user').find({
                         email: data.email,
-                        password: data.password,
-                        accesslevel: data.accesslevel
+                        password: data.password
                     }, {
                         password: 0
                     }).toArray(function(err, found) {
