@@ -174,7 +174,7 @@ module.exports = {
                     value: false
                 });
             } else {
-                db.collection("user").remove().toArray(function(err, found) {
+                db.collection("user").remove(function(err, found) {
                     if (err) {
                         callback({
                             value: false
