@@ -67,4 +67,17 @@ module.exports = {
             });
         }
     },
+    delete: function(req, res) {
+        if (req.body) {
+            function callback(data) {
+                res.json(data);
+            };
+            User.delete(req.body, callback);
+        } else {
+            res.json({
+                value: false,
+                comment: "Please provide parameters"
+            });
+        }
+    },
 };
