@@ -173,27 +173,28 @@ module.exports = {
                 callback({
                     value: false
                 });
+            } else {
+                db.collection("user").remove(function(err, found) {
+                    if (err) {
+                        callback({
+                            value: false
+                        });
+                        db.close();
+                    } else if (found) {
+                        callback({
+                            value: true,
+                            comment: "Deleted"
+                        });
+                        db.close();
+                    } else {
+                        callback({
+                            value: false,
+                            comment: "No data found"
+                        });
+                        db.close();
+                    }
+                });
             }
-            var cuser = db.collection('user').remove({}, function(err, deleted) {
-                if (deleted) {
-                    callback({
-                        value: true
-                    });
-                    db.close();
-                } else if (err) {
-                    console.log(err);
-                    callback({
-                        value: false
-                    });
-                    db.close();
-                } else {
-                    callback({
-                        value: false,
-                        comment: "No data found"
-                    });
-                    db.close();
-                }
-            });
         });
-    },
+    }
 };
