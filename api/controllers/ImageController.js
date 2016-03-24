@@ -6,12 +6,12 @@
  */
 var resemble = require('node-resemble');
 module.exports = {
-    upload: function (req, res) {
+    upload: function(req, res) {
         var path = req.param('path');
         if (path && path != "") {
-            req.file("file").upload(function (err, uploadedFiles) {
+            req.file("file").upload(function(err, uploadedFiles) {
                 if (err) return res.send(500, err);
-                _.each(uploadedFiles, function (n) {
+                _.each(uploadedFiles, function(n) {
                     var oldpath = n.fd;
                     var source = sails.fs.createReadStream(n.fd);
                     n.fd = n.fd.split('\\').pop().split('/').pop();
@@ -19,12 +19,12 @@ module.exports = {
                     n.fd = split[0] + "." + split[1].toLowerCase();
                     var dest = sails.fs.createWriteStream('./' + path + '/' + n.fd);
                     source.pipe(dest);
-                    source.on('end', function () {
-                        sails.fs.unlink(oldpath, function (data) {
+                    source.on('end', function() {
+                        sails.fs.unlink(oldpath, function(data) {
                             console.log(data);
                         });
                     });
-                    source.on('error', function (err) {
+                    source.on('error', function(err) {
                         console.log(err);
                     });
                 });
@@ -40,9 +40,9 @@ module.exports = {
             });
         }
     },
-    resize: function (req, res) {
+    resize: function(req, res) {
         var file = req.query.file;
-        var path1 = req.query('path');
+        var path1 = req.query.path;
         var filepath = './' + path1 + '/' + file;
         var isfile = sails.fs.existsSync(filepath);
 
@@ -63,7 +63,7 @@ module.exports = {
             showimage(filepath);
         }
     },
-    save: function (req, res) {
+    save: function(req, res) {
         if (req.body) {
             if (req.body._id) {
                 if (req.body._id != "" && sails.ObjectID.isValid(req.body._id)) {
@@ -79,10 +79,10 @@ module.exports = {
             }
 
             function user() {
-                var print = function (data) {
+                var print = function(data) {
                     res.json(data);
                 }
-                User.save(req.body, print);
+                Image.save(req.body, print);
             }
         } else {
             res.json({
@@ -91,32 +91,12 @@ module.exports = {
             });
         }
     },
-    login: function (req, res) {
-        if (req.body) {
-            if (req.body.email && req.body.email != "" && req.body.password && req.body.password != "") {
-                var print = function (data) {
-                    res.json(data);
-                }
-                User.login(req.body, print);
-            } else {
-                res.json({
-                    value: false,
-                    comment: "Please provide parameters"
-                });
-            }
-        } else {
-            res.json({
-                value: false,
-                comment: "Please provide parameters"
-            });
-        }
-    },
-    find: function (req, res) {
+    find: function(req, res) {
         if (req.body) {
             function callback(data) {
                 res.json(data);
             };
-            User.find(req.body, callback);
+            Image.find(req.body, callback);
         } else {
             res.json({
                 value: false,
@@ -124,8 +104,8 @@ module.exports = {
             });
         }
     },
-    compare: function (req, res) {
-        resemble('./img/1.jpg').compareTo('./img/6.jpg').ignoreAntialiasing().onComplete(function (data) {
+    compare: function(req, res) {
+        resemble('./img/1.jpg').compareTo('./img/6.jpg').ignoreAntialiasing().onComplete(function(data) {
             res.json(data);
         });
     },

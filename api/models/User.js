@@ -1,5 +1,5 @@
 /**
- * Image.js
+ * user.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
@@ -13,11 +13,10 @@ module.exports = {
                 callback({
                     value: false
                 });
-            }
-            if (db) {
+            } else {
                 if (!data._id) {
                     data._id = sails.ObjectID();
-                    db.collection('image').insert(data, function(err, created) {
+                    db.collection('user').insert(data, function(err, created) {
                         if (err) {
                             console.log(err);
                             callback({
@@ -40,10 +39,10 @@ module.exports = {
                         }
                     });
                 } else {
-                    var image = sails.ObjectID(data._id);
+                    var user = sails.ObjectID(data._id);
                     delete data._id
-                    db.collection('image').update({
-                        _id: image
+                    db.collection('user').update({
+                        _id: user
                     }, {
                         $set: data
                     }, function(err, updated) {
@@ -77,6 +76,48 @@ module.exports = {
             }
         });
     },
+    login: function(data, callback) {
+        if (data.password) {
+            data.password = sails.md5(data.password);
+            sails.query(function(err, db) {
+                if (db) {
+                    db.collection('user').find({
+                        email: data.email,
+                        password: data.password,
+                        accesslevel: data.accesslevel
+                    }, {
+                        password: 0
+                    }).toArray(function(err, found) {
+                        if (err) {
+                            callback({
+                                value: false
+                            });
+                            console.log(err);
+                            db.close();
+                        } else if (found && found[0]) {
+                            callback(found[0]);
+                            db.close();
+                        } else {
+                            callback({
+                                value: false,
+                                comment: "No data found"
+                            });
+                            db.close();
+                        }
+                    });
+                } else {
+                    console.log(err);
+                    callback({
+                        value: false
+                    });
+                }
+            });
+        } else {
+            callback({
+                value: false
+            });
+        }
+    },
     find: function(data, callback) {
         sails.query(function(err, db) {
             if (err) {
@@ -84,9 +125,8 @@ module.exports = {
                 callback({
                     value: false
                 });
-            }
-            if (db) {
-                db.collection("image").find({}, {
+            } else {
+                db.collection("user").find({}, {
                     password: 0
                 }).toArray(function(err, found) {
                     if (err) {
