@@ -43,6 +43,7 @@ module.exports = {
                                     });
                                     db.close();
                                 } else if (created) {
+                                    delete data.password;
                                     callback({
                                         value: true,
                                         comment: data
@@ -145,7 +146,9 @@ module.exports = {
                     value: false
                 });
             } else {
-                db.collection("user").find().toArray(function(err, found) {
+                db.collection("user").find({}, {
+                    password: 0
+                }).toArray(function(err, found) {
                     if (err) {
                         callback({
                             value: false
