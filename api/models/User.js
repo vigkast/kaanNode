@@ -7,6 +7,9 @@
 
 module.exports = {
     save: function(data, callback) {
+        if (data.password && data.password != "") {
+            data.password = sails.md5(data.password);
+        }
         sails.query(function(err, db) {
             if (err) {
                 console.log(err);
