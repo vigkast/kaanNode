@@ -79,5 +79,5 @@ module.exports = {
                 comment: "Please provide parameters"
             });
         }
-    },
+    }
 };
