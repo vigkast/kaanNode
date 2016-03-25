@@ -67,7 +67,7 @@ module.exports = {
         if (req.body) {
             if (req.body._id) {
                 if (req.body._id != "" && sails.ObjectID.isValid(req.body._id)) {
-                    user();
+                    image();
                 } else {
                     res.json({
                         value: false,
@@ -75,10 +75,10 @@ module.exports = {
                     });
                 }
             } else {
-                user();
+                image();
             }
 
-            function user() {
+            function image() {
                 var print = function(data) {
                     res.json(data);
                 }
@@ -105,8 +105,19 @@ module.exports = {
         }
     },
     compare: function(req, res) {
-        resemble('./img/1.jpg').compareTo('./img/6.jpg').ignoreAntialiasing().onComplete(function(data) {
-            res.json(data);
-        });
+        if (req.query) {
+            function callback(data) {
+                res.json(data);
+            };
+            Image.compare(req.query, callback);
+        } else {
+            res.json({
+                value: false,
+                comment: "Please provide parameters"
+            });
+        }
+        // resemble('./img/1.jpg').compareTo('./img/6.jpg').ignoreAntialiasing().onComplete(function(data) {
+        //     res.json(data);
+        // });
     },
 };
