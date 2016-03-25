@@ -111,27 +111,30 @@ module.exports = {
     compare: function(data, callback) {
         Image.find(data, function(respo) {
             if (respo.value != false) {
-                var abc = [];
-                var i = 0;
-                _.each(respo, function(user) {
-                    if (user.ear && user.ear != "") {
-                        resemble('./earCompare/' + data.file).compareTo('./earImage/' + user.ear).ignoreAntialiasing().onComplete(function(data2) {
-                            console.log(data2);
-                            data2.email = user.email;
-                            abc.push(data2);
-                            i++;
-                            if (i == respo.length) {
-                                callback(abc);
-                            }
-                        });
-                    } else {
-                        i++;
-                        if (i == respo.length) {
-                            abc = sails._.sortBy(abc, 'misMatchPercentage');
-                            callback(abc);
-                        }
-                    }
+                callback({
+                    value: true
                 });
+                // var abc = [];
+                // var i = 0;
+                // _.each(respo, function(user) {
+                //     if (user.ear && user.ear != "") {
+                //         resemble('./earCompare/' + data.file).compareTo('./earImage/' + user.ear).ignoreAntialiasing().onComplete(function(data2) {
+                //             console.log(data2);
+                //             data2.email = user.email;
+                //             abc.push(data2);
+                //             i++;
+                //             if (i == respo.length) {
+                //                 callback(abc);
+                //             }
+                //         });
+                //     } else {
+                //         i++;
+                //         if (i == respo.length) {
+                //             abc = sails._.sortBy(abc, 'misMatchPercentage');
+                //             callback(abc);
+                //         }
+                //     }
+                // });
             } else {
                 callback({
                     value: false,
