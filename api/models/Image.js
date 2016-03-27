@@ -113,7 +113,7 @@ module.exports = {
                 var abc = [];
                 var i = 0;
                 _.each(respo, function(user) {
-                    if (user.ear && user.ear != "") {
+                    if (user.earimage && user.earimage != "") {
                         sails.resemble('./earCompare/' + data.file).compareTo('./earImage/' + user.earimage).ignoreAntialiasing().onComplete(function(data2) {
                             console.log(data2);
                             abc.push({
