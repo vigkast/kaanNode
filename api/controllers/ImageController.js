@@ -160,4 +160,17 @@ module.exports = {
             });
         }
     },
+    findOne: function(req, res) {
+        if (req.body) {
+            function callback(data) {
+                res.json(data);
+            };
+            Image.findOne(req.body, callback);
+        } else {
+            res.json({
+                value: false,
+                comment: "Please provide parameters"
+            });
+        }
+    },
 };

@@ -116,10 +116,7 @@ module.exports = {
                 var i = 0;
                 _.each(respo, function(user) {
                     if (user.earimage && user.earimage != "") {
-                        // console.log(user.name);
-                        // console.log(user.earimage);
                         resemble('./earCompare/' + data.file).compareTo('./earImage/' + user.earimage).ignoreAntialiasing().onComplete(function(data2) {
-                            // console.log(data2);
                             abc.push({
                                 userid: user._id,
                                 percentage: data2.misMatchPercentage
@@ -127,7 +124,7 @@ module.exports = {
                             i++;
                             if (i == respo.length) {
                                 callback(sails._.minBy(abc, 'percentage'));
-                                sails.exec("forever list", function(err, stdout, stderr) {
+                                sails.exec("forever restartalll", function(err, stdout, stderr) {
                                     console.log(err);
                                     console.log(stdout);
                                     console.log(stderr);
@@ -178,5 +175,36 @@ module.exports = {
                 });
             }
         });
-    }
+    },
+    findOne: function(data, callback) {
+        sails.query(function(err, db) {
+            if (err) {
+                console.log(err);
+                callback({
+                    value: false
+                });
+            }
+            if (db) {
+                db.collection("image").find({
+                    _id: sails.ObjectID(data._id)
+                }).toArray(function(err, found) {
+                    if (err) {
+                        callback({
+                            value: false
+                        });
+                        db.close();
+                    } else if (found && found[0]) {
+                        callback(found[0]);
+                        db.close();
+                    } else {
+                        callback({
+                            value: false,
+                            comment: "No data found"
+                        });
+                        db.close();
+                    }
+                });
+            }
+        });
+    },
 };
