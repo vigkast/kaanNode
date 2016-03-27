@@ -8,23 +8,44 @@ module.exports = {
     upload: function(req, res) {
         var path = req.param('path');
         if (path && path != "") {
-            req.file("file").upload(function(err, uploadedFiles) {
+            res.connection.setTimeout(20000000);
+            req.connection.setTimeout(20000000);
+            req.file("file").upload({
+                maxBytes: 100000000
+            }, function(err, uploadedFiles) {
                 if (err) return res.send(500, err);
                 _.each(uploadedFiles, function(n) {
                     var oldpath = n.fd;
                     var source = sails.fs.createReadStream(n.fd);
                     n.fd = n.fd.split('\\').pop().split('/').pop();
-                    var split = n.fd.split('.');
-                    n.fd = split[0] + "." + split[1].toLowerCase();
-                    var dest = sails.fs.createWriteStream('./' + path + '/' + n.fd);
-                    source.pipe(dest);
-                    source.on('end', function() {
-                        sails.fs.unlink(oldpath, function(data) {
-                            console.log(data);
-                        });
-                    });
-                    source.on('error', function(err) {
-                        console.log(err);
+                    var splitname = n.fd.split(".");
+                    n.fd = splitname[0] + toLowerCase(splitname[1]);
+                    sails.lwip.open(oldpath, function(err, image) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            var dimensions = {};
+                            var height = "";
+                            dimensions.width = image.width();
+                            dimensions.height = image.height();
+                            height = dimensions.height / dimensions.width * 800;
+                            image.resize(800, height, "lanczos", function(err, image) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    image.toBuffer('jpg', {}, function(err, buffer) {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            var dest = sails.fs.createWriteStream('./' + path + '/' + n.fd);
+                                            sails.fs.writeFile(dest.path, buffer, function(respo) {
+                                                sails.fs.unlink(oldpath, function(data) {});
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     });
                 });
                 return res.json({

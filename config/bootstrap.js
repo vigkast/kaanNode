@@ -27,6 +27,7 @@ module.exports.bootstrap = function(cb) {
         sails.fs = require('fs'),
         sails.md5 = require('MD5'),
         sails.exec = require('child_process').exec,
+        sails.lwip = require('lwip'),
         // Connection URL
         sails.url = 'mongodb://localhost:27017/compare';
     sails.query = function(myfunc) {
