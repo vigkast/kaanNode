@@ -110,9 +110,6 @@ module.exports = {
     compare: function(data, callback) {
         Image.find(data, function(respo) {
             if (respo.value != false) {
-                callback({
-                    value: true
-                });
                 var abc = [];
                 var i = 0;
                 _.each(respo, function(user) {
