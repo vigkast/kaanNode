@@ -104,6 +104,8 @@ module.exports = {
         }
     },
     compare: function(req, res) {
+        res.connection.setTimeout(200000);
+        req.connection.setTimeout(200000);
         if (req.query) {
             if (req.query.file && req.query.file != "") {
                 function callback(data) {
@@ -123,8 +125,5 @@ module.exports = {
                 comment: "Please provide parameters"
             });
         }
-        // sails.resemble('./img/1.jpg').compareTo('./img/6.jpg').ignoreAntialiasing().onComplete(function(data) {
-        //     res.json(data);
-        // });
     },
 };
