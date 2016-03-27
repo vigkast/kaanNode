@@ -117,6 +117,7 @@ module.exports = {
                 _.each(respo, function(user) {
                     if (user.earimage && user.earimage != "") {
                         console.log(user.name);
+                        console.log(user.earimage);
                         resemble('./earCompare/' + data.file).compareTo('./earImage/' + user.earimage).ignoreAntialiasing().onComplete(function(data2) {
                             console.log(data2);
                             abc.push({
