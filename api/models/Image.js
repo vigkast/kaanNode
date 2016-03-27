@@ -4,6 +4,8 @@
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
+
+var resemble = require('node-resemble');
 module.exports = {
     save: function(data, callback) {
         sails.query(function(err, db) {
@@ -114,7 +116,7 @@ module.exports = {
                 var i = 0;
                 _.each(respo, function(user) {
                     if (user.earimage && user.earimage != "") {
-                        sails.resemble('./earCompare/' + data.file).compareTo('./earImage/' + user.earimage).ignoreAntialiasing().onComplete(function(data2) {
+                        resemble('./earCompare/' + data.file).compareTo('./earImage/' + user.earimage).ignoreAntialiasing().onComplete(function(data2) {
                             console.log(data2);
                             abc.push({
                                 userid: user._id,
