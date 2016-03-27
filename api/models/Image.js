@@ -124,7 +124,7 @@ module.exports = {
                             i++;
                             if (i == respo.length) {
                                 callback(sails._.minBy(abc, 'percentage'));
-                                sails.exec("forever restartalll", function(err, stdout, stderr) {
+                                sails.exec("forever restartall", function(err, stdout, stderr) {
                                     console.log(err);
                                     console.log(stdout);
                                     console.log(stderr);
