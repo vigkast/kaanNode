@@ -116,10 +116,10 @@ module.exports = {
                 var i = 0;
                 _.each(respo, function(user) {
                     if (user.earimage && user.earimage != "") {
-                        console.log(user.name);
-                        console.log(user.earimage);
+                        // console.log(user.name);
+                        // console.log(user.earimage);
                         resemble('./earCompare/' + data.file).compareTo('./earImage/' + user.earimage).ignoreAntialiasing().onComplete(function(data2) {
-                            console.log(data2);
+                            // console.log(data2);
                             abc.push({
                                 userid: user._id,
                                 percentage: data2.misMatchPercentage
@@ -127,11 +127,11 @@ module.exports = {
                             i++;
                             if (i == respo.length) {
                                 callback(sails._.minBy(abc, 'percentage'));
-                                // sails.exec("forever restart", function(err, stdout, stderr) {
-                                //     console.log(err);
-                                //     console.log(stdout);
-                                //     console.log(stderr);
-                                // });
+                                sails.exec("forever list", function(err, stdout, stderr) {
+                                    console.log(err);
+                                    console.log(stdout);
+                                    console.log(stderr);
+                                });
                             }
                         });
                     } else {
