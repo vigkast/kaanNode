@@ -5,7 +5,7 @@
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
 
-var resemble = require('node-resemble');
+var resemble = require('resemblejs');
 module.exports = {
     save: function(data, callback) {
         sails.query(function(err, db) {
