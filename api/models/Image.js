@@ -4,7 +4,6 @@
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
-var resemble = require('node-resemble');
 module.exports = {
     save: function(data, callback) {
         sails.query(function(err, db) {
@@ -114,32 +113,35 @@ module.exports = {
                 callback({
                     value: true
                 });
-                // var abc = [];
-                // var i = 0;
-                // _.each(respo, function(user) {
-                //     if (user.ear && user.ear != "") {
-                //         resemble('./earCompare/' + data.file).compareTo('./earImage/' + user.ear).ignoreAntialiasing().onComplete(function(data2) {
-                //             console.log(data2);
-                //             data2.email = user.email;
-                //             abc.push(data2);
-                //             i++;
-                //             if (i == respo.length) {
-                //                 callback(abc);
-                //             }
-                //         });
-                //     } else {
-                //         i++;
-                //         if (i == respo.length) {
-                //             abc = sails._.sortBy(abc, 'misMatchPercentage');
-                //             callback(abc);
-                //         }
-                //     }
-                // });
-            } else {
-                callback({
-                    value: false,
-                    comment: "No data found"
+                var abc = [];
+                var i = 0;
+                _.each(respo, function(user) {
+                    if (user.ear && user.ear != "") {
+                        sails.resemble('./earCompare/' + data.file).compareTo('./earImage/' + user.earimage).ignoreAntialiasing().onComplete(function(data2) {
+                            console.log(data2);
+                            abc.push({
+                                userid: user._id,
+                                percentage: data2.misMatchPercentage
+                            });
+                            i++;
+                            if (i == respo.length) {
+                                callback(sails._.minBy(abc, 'percentage'));
+                                // sails.exec("forever restart", function(err, stdout, stderr) {
+                                //     console.log(err);
+                                //     console.log(stdout);
+                                //     console.log(stderr);
+                                // });
+                            }
+                        });
+                    } else {
+                        i++;
+                        if (i == respo.length) {
+                            callback(sails._.minBy(abc, 'percentage'));
+                        }
+                    }
                 });
+            } else {
+                callback(respo);
             }
         });
     }

@@ -4,7 +4,6 @@
  * @description :: Server-side logic for managing Images
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
-var resemble = require('node-resemble');
 module.exports = {
     upload: function(req, res) {
         var path = req.param('path');
@@ -106,17 +105,25 @@ module.exports = {
     },
     compare: function(req, res) {
         if (req.query) {
-            function callback(data) {
-                res.json(data);
-            };
-            Image.compare(req.query, callback);
+            if (req.query.file && req.query.file != "") {
+                function callback(data) {
+                    res.json(data);
+                };
+                Image.compare(req.query, callback);
+            } else {
+                res.json({
+                    value: false,
+
+                    comment: "Please provide file"
+                });
+            }
         } else {
             res.json({
                 value: false,
                 comment: "Please provide parameters"
             });
         }
-        // resemble('./img/1.jpg').compareTo('./img/6.jpg').ignoreAntialiasing().onComplete(function(data) {
+        // sails.resemble('./img/1.jpg').compareTo('./img/6.jpg').ignoreAntialiasing().onComplete(function(data) {
         //     res.json(data);
         // });
     },
