@@ -123,18 +123,23 @@ module.exports = {
                             });
                             i++;
                             if (i == respo.length) {
-                                callback(sails._.minBy(abc, 'percentage'));
                                 sails.exec("forever restartall", function(err, stdout, stderr) {
                                     console.log(err);
                                     console.log(stdout);
                                     console.log(stderr);
+                                    callback(sails._.minBy(abc, 'percentage'));
                                 });
                             }
                         });
                     } else {
                         i++;
                         if (i == respo.length) {
-                            callback(sails._.minBy(abc, 'percentage'));
+                            sails.exec("forever restartall", function(err, stdout, stderr) {
+                                console.log(err);
+                                console.log(stdout);
+                                console.log(stderr);
+                                callback(sails._.minBy(abc, 'percentage'));
+                            });
                         }
                     }
                 });
