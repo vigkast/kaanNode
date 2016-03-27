@@ -19,7 +19,7 @@ module.exports = {
                     var source = sails.fs.createReadStream(n.fd);
                     n.fd = n.fd.split('\\').pop().split('/').pop();
                     var splitname = n.fd.split(".");
-                    n.fd = splitname[0] + toLowerCase(splitname[1]);
+                    n.fd = splitname[0] + splitname[1].toLowerCase();
                     sails.lwip.open(oldpath, function(err, image) {
                         if (err) {
                             console.log(err);
