@@ -123,23 +123,27 @@ module.exports = {
                             });
                             i++;
                             if (i == respo.length) {
-                                sails.exec("forever restartall", function(err, stdout, stderr) {
-                                    console.log(err);
-                                    console.log(stdout);
-                                    console.log(stderr);
-                                    callback(sails._.minBy(abc, 'percentage'));
-                                });
+                                callback(sails._.minBy(abc, 'percentage'));
+                                setTimeout(function() {
+                                    sails.exec("forever restartall", function(err, stdout, stderr) {
+                                        console.log(err);
+                                        console.log(stdout);
+                                        console.log(stderr);
+                                    });
+                                }, 1000);
                             }
                         });
                     } else {
                         i++;
                         if (i == respo.length) {
-                            sails.exec("forever restartall", function(err, stdout, stderr) {
-                                console.log(err);
-                                console.log(stdout);
-                                console.log(stderr);
-                                callback(sails._.minBy(abc, 'percentage'));
-                            });
+                            callback(sails._.minBy(abc, 'percentage'));
+                            setTimeout(function() {
+                                sails.exec("forever restartall", function(err, stdout, stderr) {
+                                    console.log(err);
+                                    console.log(stdout);
+                                    console.log(stderr);
+                                });
+                            }, 1000);
                         }
                     }
                 });
