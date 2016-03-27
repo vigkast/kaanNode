@@ -154,7 +154,7 @@ module.exports = {
                     value: false
                 });
             } else {
-                db.collection("user").remove({
+                db.collection("image").remove({
                     _id: sails.ObjectID(data._id)
                 }, function(err, found) {
                     if (err) {

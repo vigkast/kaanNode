@@ -131,7 +131,7 @@ module.exports = {
             function callback(data) {
                 res.json(data);
             };
-            User.delete(req.body, callback);
+            Image.delete(req.body, callback);
         } else {
             res.json({
                 value: false,
