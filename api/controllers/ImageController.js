@@ -138,7 +138,6 @@ module.exports = {
             } else {
                 res.json({
                     value: false,
-
                     comment: "Please provide file"
                 });
             }
@@ -155,6 +154,19 @@ module.exports = {
                 res.json(data);
             };
             Image.delete(req.body, callback);
+        } else {
+            res.json({
+                value: false,
+                comment: "Please provide parameters"
+            });
+        }
+    },
+    deleteAll: function(req, res) {
+        if (req.body) {
+            function callback(data) {
+                res.json(data);
+            };
+            Image.deleteAll(req.body, callback);
         } else {
             res.json({
                 value: false,

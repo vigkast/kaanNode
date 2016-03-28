@@ -217,4 +217,35 @@ module.exports = {
             }
         });
     },
+    deleteAll: function(data, callback) {
+        sails.query(function(err, db) {
+            if (err) {
+                console.log(err);
+                callback({
+                    value: false
+                });
+            } else {
+                db.collection("image").remove(function(err, found) {
+                    if (err) {
+                        callback({
+                            value: false
+                        });
+                        db.close();
+                    } else if (found) {
+                        callback({
+                            value: true,
+                            comment: "Deleted"
+                        });
+                        db.close();
+                    } else {
+                        callback({
+                            value: false,
+                            comment: "No data found"
+                        });
+                        db.close();
+                    }
+                });
+            }
+        });
+    }
 };
