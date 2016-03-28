@@ -37,12 +37,11 @@ module.exports = {
                                         if (err) {
                                             console.log(err);
                                         } else {
+                                            console.log(buffer);
                                             var dest = sails.fs.createWriteStream('./' + path + '/' + n.fd);
                                             sails.fs.writeFile(dest.path, buffer, function(respo) {
-                                                if (respo) {
-                                                    console.log(oldpath);
-                                                    sails.fs.unlink(oldpath, function(data) {});
-                                                }
+                                                console.log(oldpath);
+                                                sails.fs.unlink(oldpath, function(data) {});
                                             });
                                         }
                                     });
