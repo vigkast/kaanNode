@@ -130,7 +130,7 @@ module.exports = {
                                         console.log(stdout);
                                         console.log(stderr);
                                     });
-                                }, 1000);
+                                }, 2000);
                             }
                         });
                     } else {
@@ -143,7 +143,7 @@ module.exports = {
                                     console.log(stdout);
                                     console.log(stderr);
                                 });
-                            }, 1000);
+                            }, 2000);
                         }
                     }
                 });
