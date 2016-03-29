@@ -38,17 +38,14 @@ module.exports = {
                                             console.log(err);
                                         } else {
                                             var dest = sails.fs.createWriteStream('./' + path + '/' + n.fd);
-                                            var written = sails.fs.writeFile(dest.path, buffer, function(respo) {
-                                                console.log("Written" + written);
+                                            sails.fs.writeFile(dest.path, buffer, function(respo) {
                                                 sails.fs.unlink(oldpath, function(data) {
-                                                    console.log("Error" + data);
-                                                    written.on('finish', function(err) {
-                                                        console.log("Error" + err);
+                                                    setTimeout(function() {
                                                         res.json({
                                                             message: uploadedFiles.length + ' file(s) uploaded successfully!',
                                                             files: uploadedFiles
                                                         });
-                                                    });
+                                                    }, 2000);
                                                 });
                                             });
                                         }
