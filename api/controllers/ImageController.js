@@ -38,7 +38,7 @@ module.exports = {
                                             console.log(err);
                                         } else {
                                             var dest = sails.fs.createWriteStream('./' + path + '/' + n.fd);
-                                            var written = sails.fs.writeFileSync(dest.path, buffer, function(respo) {
+                                            var written = sails.fs.writeFile(dest.path, buffer, function(respo) {
                                                 console.log("Written" + written);
                                                 sails.fs.unlink(oldpath, function(data) {
                                                     console.log("Error" + data);
