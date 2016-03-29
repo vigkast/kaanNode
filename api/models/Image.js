@@ -125,13 +125,11 @@ module.exports = {
                             i++;
                             if (i == respo.length) {
                                 callback(sails._.minBy(abc, 'percentage'));
-                                setTimeout(function() {
-                                    sails.exec("forever restartall", function(err, stdout, stderr) {
-                                        console.log(err);
-                                        console.log(stdout);
-                                        console.log(stderr);
-                                    });
-                                }, 2000);
+                                sails.exec("forever restartall", function(err, stdout, stderr) {
+                                    console.log(err);
+                                    console.log(stdout);
+                                    console.log(stderr);
+                                });
                             }
                         });
                     } else {
