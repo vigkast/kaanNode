@@ -41,7 +41,14 @@ module.exports = {
                                             var dest = sails.fs.createWriteStream('./' + path + '/' + n.fd);
                                             sails.fs.writeFile(dest.path, buffer, function(respo) {
                                                 console.log(oldpath);
-                                                sails.fs.unlink(oldpath, function(data) {});
+                                                sails.fs.unlink(oldpath, function(data) {
+                                                    dest.on('finish', function() {
+                                                        res.json({
+                                                            message: uploadedFiles.length + ' file(s) uploaded successfully!',
+                                                            files: uploadedFiles
+                                                        });
+                                                    });
+                                                });
                                             });
                                         }
                                     });
@@ -49,10 +56,6 @@ module.exports = {
                             });
                         }
                     });
-                });
-                return res.json({
-                    message: uploadedFiles.length + ' file(s) uploaded successfully!',
-                    files: uploadedFiles
                 });
             });
         } else {
