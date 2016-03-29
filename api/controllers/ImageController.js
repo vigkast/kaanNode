@@ -42,7 +42,8 @@ module.exports = {
                                             sails.fs.writeFile(dest.path, buffer, function(respo) {
                                                 console.log(oldpath);
                                                 sails.fs.unlink(oldpath, function(data) {
-                                                    dest.on('finish', function() {
+                                                    dest.on('finish', function(err) {
+                                                        console.log("Error" + err);
                                                         res.json({
                                                             message: uploadedFiles.length + ' file(s) uploaded successfully!',
                                                             files: uploadedFiles
