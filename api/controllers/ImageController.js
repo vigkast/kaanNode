@@ -37,12 +37,12 @@ module.exports = {
                                         if (err) {
                                             console.log(err);
                                         } else {
-                                            console.log(buffer);
                                             var dest = sails.fs.createWriteStream('./' + path + '/' + n.fd);
-                                            sails.fs.writeFile(dest.path, buffer, function(respo) {
-                                                console.log(oldpath);
+                                            var written = sails.fs.writeFileSync(dest.path, buffer, function(respo) {
+                                                console.log("Written" + written);
                                                 sails.fs.unlink(oldpath, function(data) {
-                                                    dest.on('finish', function(err) {
+                                                    console.log("Error" + data);
+                                                    written.on('finish', function(err) {
                                                         console.log("Error" + err);
                                                         res.json({
                                                             message: uploadedFiles.length + ' file(s) uploaded successfully!',
