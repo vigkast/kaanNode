@@ -150,11 +150,18 @@ module.exports = {
         }
     },
     delete: function(req, res) {
-        if (req.body) {
-            function callback(data) {
-                res.json(data);
-            };
-            Image.delete(req.body, callback);
+         if (req.body) {
+            if (req.body._id && req.body._id != "" && sails.ObjectID.isValid(req.body._id)) {
+                function callback(data) {
+                    res.json(data);
+                };
+                Image.delete(req.body, callback);
+            } else {
+                res.json({
+                    value: false,
+                    comment: "Invalid Id"
+                });
+            }
         } else {
             res.json({
                 value: false,
@@ -177,10 +184,17 @@ module.exports = {
     },
     findOne: function(req, res) {
         if (req.body) {
-            function callback(data) {
-                res.json(data);
-            };
-            Image.findOne(req.body, callback);
+            if (req.body._id && req.body._id != "" && sails.ObjectID.isValid(req.body._id)) {
+                function callback(data) {
+                    res.json(data);
+                };
+                Image.findOne(req.body, callback);
+            } else {
+                res.json({
+                    value: false,
+                    comment: "Invalid Id"
+                });
+            }
         } else {
             res.json({
                 value: false,
